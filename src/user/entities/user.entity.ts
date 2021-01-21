@@ -8,6 +8,6 @@ export class User {
     @Column({ length: 500 })
     name: string;
 
-    @Column('text')
-    age: string;
+    @Column()
+    age: number;
 }
