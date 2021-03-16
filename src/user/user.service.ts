@@ -19,7 +19,7 @@ export class UserService {
       const user = await this.findOne(createUserDto.email);
 
       if (user) {
-          throw new HttpException('User with this email are already exist', HttpStatus.CONFLICT);
+          throw new HttpException('User with this email are already exists', HttpStatus.CONFLICT);
       }
 
       const password: string = await hash(createUserDto.password);
@@ -38,12 +38,4 @@ export class UserService {
       where: { email }
     });
   }
-
-  // async update(id: number, updateUserDto: UpdateUserDto) {
-  //   return await this.userRepository.update(id, updateUserDto);
-  // }
-  //
-  // async delete(id: number) {
-  //   return await this.userRepository.delete(id);
-  // }
 }

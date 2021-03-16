@@ -2,11 +2,16 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type LogIn {
+  access_token: String!
+}
+
 type Mutation {
   createUser(email: String!, password: String!): User!
 }
 
 type Query {
+  login(email: String!, password: String!): LogIn!
   user(email: String!): User!
   users: [User!]!
 }
