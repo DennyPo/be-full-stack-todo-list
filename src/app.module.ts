@@ -1,15 +1,17 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { LoggerMiddleware } from "./common/middleware/logger.middleware";
+import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
 
 @Module({
-  imports: [UserModule, AuthModule],
+  imports: [
+    GraphQLModule.forRoot({
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      sortSchema: true,
+    }),
+    UserModule,
+    AuthModule
+  ],
 })
-export class AppModule implements NestModule{
-  configure(consumer: MiddlewareConsumer): any {
-    consumer
-      .apply(LoggerMiddleware)
-      .forRoutes('cats');
-  }
-}
+export class AppModule {}

@@ -8,7 +8,7 @@ import { jwtConstants } from "../config/constants";
 import { LocalStrategy } from "./local.strategy";
 
 @Module({
-  controllers: [AuthController],
+  // controllers: [AuthController],
   providers: [AuthService, LocalStrategy],
   imports: [
     forwardRef(() => UserModule),
