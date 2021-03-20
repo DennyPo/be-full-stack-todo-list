@@ -7,12 +7,12 @@ type LogIn {
 }
 
 type Mutation {
-  createUser(email: String!, password: String!): User!
+  signUp(email: String!, password: String!): User!
 }
 
 type Query {
+  currentUser: User!
   login(email: String!, password: String!): LogIn!
-  user(email: String!): User!
   users: [User!]!
 }
 

@@ -15,27 +15,29 @@ export class UserService {
       private userRepository: Repository<User>
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
-      const user = await this.findOne(createUserDto.email);
-
-      if (user) {
-          throw new HttpException('User with this email are already exists', HttpStatus.CONFLICT);
-      }
+    async create(createUserDto: CreateUserDto) {
 
       const password: string = await hash(createUserDto.password);
 
       const { password: passwd, ...result}: CreateUserDto = await this.userRepository.save({...createUserDto, password });
 
       return result;
-  }
+    }
 
-  async findAll() {
-    return await this.userRepository.find({ select: ["email", "id"] });
-  }
+    async findAll() {
+        return await this.userRepository.find({ select: ["email", "id"] });
+    }
 
-  async findOne(email: string) {
-    return await this.userRepository.findOne({
-      where: { email }
-    });
-  }
+    async findOneByEmail(email: string) {
+        return await this.userRepository.findOne({
+            where: { email }
+        });
+    }
+
+    async findOneById(id: number) {
+        return await this.userRepository.findOne({
+            where: { id },
+            select: ["id", "email"]
+        });
+    }
 }
