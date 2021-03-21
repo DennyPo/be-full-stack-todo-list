@@ -1,8 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from "@nestjs/jwt";
 import { UserService } from "../user/user.service";
-import { User } from "../user/interfaces/user.interface";
 import { comparePasswords } from "../utils";
+import { CreateUserInput } from "../user/dto/create-user.input";
 
 @Injectable()
 export class AuthService {
@@ -19,7 +19,7 @@ export class AuthService {
     return null;
   }
 
-  async login(user: User) {
+  async login(user: CreateUserInput) {
 
     const userDb = await this.userService.findOneByEmail(user.email);
 
@@ -34,7 +34,7 @@ export class AuthService {
     };
   }
 
-  async signUp(user: User) {
+  async signUp(user: CreateUserInput) {
 
     const userDb = await this.userService.findOneByEmail(user.email);
 

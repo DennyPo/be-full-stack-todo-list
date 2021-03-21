@@ -3,6 +3,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
+import { TodoModule } from './todo/todo.module';
 
 @Module({
   imports: [
@@ -11,7 +12,8 @@ import { join } from 'path';
       sortSchema: true,
     }),
     UserModule,
-    AuthModule
+    AuthModule,
+    TodoModule
   ],
 })
 export class AppModule {}

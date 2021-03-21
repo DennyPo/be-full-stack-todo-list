@@ -2,18 +2,33 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateTodoInput {
+  description: String!
+  title: String!
+}
+
 type LogIn {
   access_token: String!
 }
 
 type Mutation {
+  createTodo(createTodoInput: CreateTodoInput!): Todo!
   signUp(email: String!, password: String!): User!
 }
 
 type Query {
   currentUser: User!
+  findAllCurrentUserTodos: [Todo!]!
+  findAllTodosByUserId(userId: Float!): [Todo!]!
   login(email: String!, password: String!): LogIn!
   users: [User!]!
+}
+
+type Todo {
+  description: String!
+  id: Int!
+  title: String!
+  userId: Int!
 }
 
 type User {

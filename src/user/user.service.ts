@@ -1,6 +1,6 @@
-import {BadRequestException, HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { Inject, Injectable} from '@nestjs/common';
+import { CreateUserInput } from './dto/create-user.input';
+import { UpdateUserInput } from './dto/update-user.input';
 import { Repository } from "typeorm";
 import { User } from "./entities/user.entity";
 
@@ -15,11 +15,11 @@ export class UserService {
       private userRepository: Repository<User>
   ) {}
 
-    async create(createUserDto: CreateUserDto) {
+    async create(createUserInput: CreateUserInput) {
 
-      const password: string = await hash(createUserDto.password);
+      const password: string = await hash(createUserInput.password);
 
-      const { password: passwd, ...result}: CreateUserDto = await this.userRepository.save({...createUserDto, password });
+      const { password: passwd, ...result} = await this.userRepository.save({...createUserInput, password });
 
       return result;
     }
