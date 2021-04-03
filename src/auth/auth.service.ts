@@ -3,12 +3,15 @@ import { JwtService } from "@nestjs/jwt";
 import { UserService } from "../user/user.service";
 import { comparePasswords } from "../utils";
 import { CreateUserInput } from "../user/dto/create-user.input";
+import { jwtConstants } from "../config/constants";
+import {RefreshService} from "../refresh/refresh.service";
 
 @Injectable()
 export class AuthService {
   constructor(
       private userService: UserService,
-      private jwtService: JwtService
+      private jwtService: JwtService,
+      private refreshService: RefreshService
   ) {}
 
   async validateUser(payload: any): Promise<any> {
@@ -27,11 +30,16 @@ export class AuthService {
       throw new HttpException('Wrong email or password', HttpStatus.NOT_FOUND);
     }
 
-    const payload = { email: userDb.email, sub: userDb.id };
+    const payload = { email: userDb.email, sub: userDb };
 
-    return {
-      access_token: this.jwtService.sign(payload),
+    const tokens = {
+      accessToken: this.jwtService.sign(payload, jwtConstants.accessToken),
+      refreshToken: this.jwtService.sign(payload, jwtConstants.refreshToken),
     };
+
+    await this.refreshService.create({ userId: userDb.id, token: tokens.refreshToken })
+
+    return tokens;
   }
 
   async signUp(user: CreateUserInput) {

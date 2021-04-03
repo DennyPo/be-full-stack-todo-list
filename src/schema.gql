@@ -7,20 +7,26 @@ input CreateTodoInput {
   title: String!
 }
 
+input CreateUserInput {
+  email: String!
+  password: String!
+}
+
 type LogIn {
-  access_token: String!
+  accessToken: String!
+  refreshToken: String!
 }
 
 type Mutation {
   createTodo(createTodoInput: CreateTodoInput!): Todo!
-  signUp(email: String!, password: String!): User!
+  signUp(signUpUserInput: CreateUserInput!): User!
 }
 
 type Query {
   currentUser: User!
   findAllCurrentUserTodos: [Todo!]!
   findAllTodosByUserId(userId: Float!): [Todo!]!
-  login(email: String!, password: String!): LogIn!
+  login(loginUserInput: CreateUserInput!): LogIn!
   users: [User!]!
 }
 

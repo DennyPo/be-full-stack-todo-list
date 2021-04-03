@@ -3,18 +3,16 @@ import { AuthService } from './auth.service';
 import { UserModule } from "../user/user.module";
 import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";
-import { jwtConstants } from "../config/constants";
 import { AuthResolver } from "./auth.resolver";
+import { RefreshModule } from "../refresh/refresh.module";
 
 @Module({
   providers: [AuthService, AuthResolver],
   imports: [
     forwardRef(() => UserModule),
     PassportModule,
-    JwtModule.register({
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60m' },
-    }),
+    JwtModule.register({}),
+    RefreshModule
   ],
   exports: [AuthService]
 })

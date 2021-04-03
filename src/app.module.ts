@@ -4,6 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { TodoModule } from './todo/todo.module';
+import { RefreshModule } from './refresh/refresh.module';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { TodoModule } from './todo/todo.module';
     }),
     UserModule,
     AuthModule,
-    TodoModule
+    TodoModule,
+    RefreshModule
   ],
 })
 export class AppModule {}
