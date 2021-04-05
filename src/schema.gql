@@ -27,6 +27,7 @@ type Query {
   findAllCurrentUserTodos: [Todo!]!
   findAllTodosByUserId(userId: Float!): [Todo!]!
   login(loginUserInput: CreateUserInput!): LogIn!
+  refreshToken(refreshToken: String!): LogIn!
   users: [User!]!
 }
 

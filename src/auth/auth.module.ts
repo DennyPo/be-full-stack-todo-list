@@ -12,7 +12,7 @@ import { RefreshModule } from "../refresh/refresh.module";
     forwardRef(() => UserModule),
     PassportModule,
     JwtModule.register({}),
-    RefreshModule
+    forwardRef(() => RefreshModule)
   ],
   exports: [AuthService]
 })

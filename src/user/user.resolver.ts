@@ -18,12 +18,7 @@ export class UserResolver{
 
     @Query(returns => User)
     async currentUser(@CurrentUser() currentUser: User) {
-        const user = await this.userService.findOneById(currentUser.id);
 
-        if (!user) {
-            throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
-        }
-
-        return user;
+        return currentUser;
     }
 }
