@@ -1,6 +1,5 @@
 import {forwardRef, HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
 import { CreateRefreshInput } from './dto/create-refresh.input';
-import { UpdateRefreshInput } from './dto/update-refresh.input';
 import { Repository, UpdateResult } from "typeorm";
 import { Refresh } from "./entities/refresh.entity";
 import { User } from "../user/entities/user.entity";
@@ -8,6 +7,7 @@ import { jwtConstants } from "../config/constants";
 import { JwtService } from "@nestjs/jwt";
 import { UserService } from "../user/user.service";
 import { AuthService } from "../auth/auth.service";
+import { LogIn } from "../auth/entities/login.entity";
 
 @Injectable()
 export class RefreshService {
@@ -21,7 +21,7 @@ export class RefreshService {
       private authService: AuthService
 ) {}
 
-  async create(createRefreshInput: CreateRefreshInput) {
+  async create(createRefreshInput: CreateRefreshInput): Promise<Refresh> {
     return await this.refreshRepository.save(createRefreshInput);
   }
 
@@ -44,7 +44,7 @@ export class RefreshService {
     return this.jwtService.sign({ email: user.email, sub: user.id }, jwtConstants.refreshToken);
   }
 
-  async createNewAccessToken(refreshToken: string) {
+  async createNewAccessToken(refreshToken: string): Promise<LogIn> {
 
     // try {
       const decodedToken = this.jwtService.verify(refreshToken, jwtConstants.refreshToken);

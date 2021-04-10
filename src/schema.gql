@@ -17,9 +17,15 @@ type LogIn {
   refreshToken: String!
 }
 
+type Message {
+  message: String!
+}
+
 type Mutation {
   createTodo(createTodoInput: CreateTodoInput!): Todo!
+  deleteTodo(id: Float!): Message!
   signUp(signUpUserInput: CreateUserInput!): User!
+  updateTodo(updateTodoInput: UpdateTodoInput!): Todo!
 }
 
 type Query {
@@ -36,6 +42,12 @@ type Todo {
   id: Int!
   title: String!
   userId: Int!
+}
+
+input UpdateTodoInput {
+  description: String
+  id: Int!
+  title: String
 }
 
 type User {

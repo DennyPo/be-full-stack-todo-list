@@ -1,6 +1,5 @@
 import { Inject, Injectable} from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
 import { Repository } from "typeorm";
 import { User } from "./entities/user.entity";
 
@@ -15,7 +14,7 @@ export class UserService {
       private userRepository: Repository<User>
   ) {}
 
-    async create(createUserInput: CreateUserInput) {
+    async create(createUserInput: CreateUserInput): Promise<User> {
 
       const password: string = await hash(createUserInput.password);
 
@@ -24,17 +23,22 @@ export class UserService {
       return result;
     }
 
-    async findAll() {
-        return await this.userRepository.find({ select: ["email", "id"] });
+    async findAll(): Promise<User[]> {
+        return await this.userRepository.find({
+            select: ["email", "id"],
+            order: {
+                id: 'DESC'
+            }
+        });
     }
 
-    async findOneByEmail(email: string) {
+    async findOneByEmail(email: string): Promise<User> {
         return await this.userRepository.findOne({
             where: { email }
         });
     }
 
-    async findOneById(id: number) {
+    async findOneById(id: number): Promise<User> {
         return await this.userRepository.findOne({
             where: { id },
             select: ["id", "email"]

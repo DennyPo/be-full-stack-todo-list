@@ -51,7 +51,7 @@ export class AuthService {
     const userDb = await this.userService.findOneByEmail(user.email);
 
     if (userDb) {
-      throw new HttpException('User with this email is already exists', HttpStatus.CONFLICT);
+      throw new HttpException('User with this email already exists', HttpStatus.CONFLICT);
     }
 
     return this.userService.create(user);

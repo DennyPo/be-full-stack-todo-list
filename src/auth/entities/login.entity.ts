@@ -7,5 +7,5 @@ export class LogIn {
     accessToken: string;
 
     @Field()
-    refreshToken: string;
+    refreshToken?: string;
 }
