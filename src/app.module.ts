@@ -15,7 +15,7 @@ import { RefreshModule } from './refresh/refresh.module';
     UserModule,
     AuthModule,
     TodoModule,
-    RefreshModule
+    RefreshModule,
   ],
 })
 export class AppModule {}

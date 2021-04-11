@@ -1,25 +1,30 @@
-import {forwardRef, HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { CreateRefreshInput } from './dto/create-refresh.input';
-import { Repository, UpdateResult } from "typeorm";
-import { Refresh } from "./entities/refresh.entity";
-import { User } from "../user/entities/user.entity";
-import { jwtConstants } from "../config/constants";
-import { JwtService } from "@nestjs/jwt";
-import { UserService } from "../user/user.service";
-import { AuthService } from "../auth/auth.service";
-import { LogIn } from "../auth/entities/login.entity";
+import { Repository, UpdateResult } from 'typeorm';
+import { Refresh } from './entities/refresh.entity';
+import { User } from '../user/entities/user.entity';
+import { jwtConstants } from '../config/constants';
+import { JwtService } from '@nestjs/jwt';
+import { UserService } from '../user/user.service';
+import { AuthService } from '../auth/auth.service';
+import { LogIn } from '../auth/entities/login.entity';
 
 @Injectable()
 export class RefreshService {
-
   constructor(
-      @Inject('REFRESH_REPOSITORY')
-      private refreshRepository: Repository<Refresh>,
-      private jwtService: JwtService,
-      private userService: UserService,
-      @Inject(forwardRef(() => AuthService))
-      private authService: AuthService
-) {}
+    @Inject('REFRESH_REPOSITORY')
+    private refreshRepository: Repository<Refresh>,
+    private jwtService: JwtService,
+    private userService: UserService,
+    @Inject(forwardRef(() => AuthService))
+    private authService: AuthService,
+  ) {}
 
   async create(createRefreshInput: CreateRefreshInput): Promise<Refresh> {
     return await this.refreshRepository.save(createRefreshInput);
@@ -28,42 +33,44 @@ export class RefreshService {
   async findOne(refreshToken: string): Promise<Refresh> {
     return await this.refreshRepository.findOne({
       where: {
-        token: refreshToken
-      }
+        token: refreshToken,
+      },
     });
   }
 
   async update(token: string, newToken: string): Promise<UpdateResult> {
-    return await this.refreshRepository.update(
-        { token },
-        { token: newToken }
-        );
+    return await this.refreshRepository.update({ token }, { token: newToken });
   }
 
   generateRefreshToken(user: User): string {
-    return this.jwtService.sign({ email: user.email, sub: user.id }, jwtConstants.refreshToken);
+    return this.jwtService.sign(
+      { email: user.email, sub: user.id },
+      jwtConstants.refreshToken,
+    );
   }
 
   async createNewAccessToken(refreshToken: string): Promise<LogIn> {
-
     // try {
-      const decodedToken = this.jwtService.verify(refreshToken, jwtConstants.refreshToken);
+    const decodedToken = this.jwtService.verify(
+      refreshToken,
+      jwtConstants.refreshToken,
+    );
 
-      const token = await this.findOne(refreshToken);
-      const user = await this.userService.findOneById(decodedToken.sub);
+    const token = await this.findOne(refreshToken);
+    const user = await this.userService.findOneById(decodedToken.sub);
 
-      if (!token || !user) {
-        throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
-      }
+    if (!token || !user) {
+      throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
+    }
 
-      // const newToken = this.generateRefreshToken(user);
+    // const newToken = this.generateRefreshToken(user);
 
-      // await this.update(refreshToken, newToken);
+    // await this.update(refreshToken, newToken);
 
-      return {
-        accessToken: this.authService.generateAccessToken(user),
-        // refreshToken: newToken
-      }
+    return {
+      accessToken: this.authService.generateAccessToken(user),
+      // refreshToken: newToken
+    };
 
     // } catch (error) {
 

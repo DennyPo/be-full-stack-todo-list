@@ -1,15 +1,14 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { Field, Int, ObjectType } from "@nestjs/graphql";
-
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 @Entity()
 export class Refresh {
-  @Field(type => Int)
+  @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field(type => Int)
+  @Field(() => Int)
   @Column()
   userId: number;
 

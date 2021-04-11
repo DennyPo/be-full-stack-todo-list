@@ -3,12 +3,11 @@ import { IsEmail, IsNotEmpty } from 'class-validator';
 
 @InputType()
 export class CreateUserInput {
+  @Field()
+  @IsEmail()
+  email: string;
 
-    @Field()
-    @IsEmail()
-    email: string;
-
-    @Field()
-    @IsNotEmpty()
-    password: string;
+  @Field()
+  @IsNotEmpty()
+  password: string;
 }
