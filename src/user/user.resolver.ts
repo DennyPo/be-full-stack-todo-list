@@ -1,7 +1,7 @@
 import { Query, Resolver } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { User } from './entities/user.entity';
-import { UseGuards } from '@nestjs/common';
+import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../common/decorators/currentUser.decorator';
 
@@ -17,6 +17,12 @@ export class UserResolver {
 
   @Query(() => User)
   async currentUser(@CurrentUser() currentUser: User): Promise<User> {
-    return currentUser;
+    const user = await this.userService.findOneById(currentUser.id);
+
+    if (!user) {
+      throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
+    }
+
+    return user;
   }
 }
