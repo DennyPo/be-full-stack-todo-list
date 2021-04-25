@@ -3,7 +3,7 @@ export const SALT_ROUNDS = 10;
 export const jwtConstants = {
   accessToken: {
     secret: 'accessSecretKey',
-    expiresIn: '24h',
+    expiresIn: '30s',
   },
   refreshToken: {
     secret: 'refreshSecretKey',
