@@ -5,7 +5,7 @@ import { comparePasswords } from '../utils';
 import { CreateUserInput } from '../user/dto/create-user.input';
 import { jwtConstants } from '../config/constants';
 import { RefreshService } from '../refresh/refresh.service';
-import { LogIn } from './entities/login.entity';
+import { LogIn } from './models/login.model';
 import { User } from '../user/entities/user.entity';
 
 @Injectable()

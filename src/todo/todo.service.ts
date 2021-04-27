@@ -1,15 +1,16 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateTodoInput } from './dto/create-todo.input';
 import { UpdateTodoInput } from './dto/update-todo.input';
 import { Repository } from 'typeorm';
 import { Todo } from './entities/todo.entity';
 import { User } from '../user/entities/user.entity';
 import { Message } from '../common/types/entities';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class TodoService {
   constructor(
-    @Inject('TODO_REPOSITORY')
+    @InjectRepository(Todo)
     private todoRepository: Repository<Todo>,
   ) {}
 

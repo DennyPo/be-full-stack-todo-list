@@ -1,7 +1,7 @@
 import { Resolver, Query, Args } from '@nestjs/graphql';
 import { RefreshService } from './refresh.service';
 import { Refresh } from './entities/refresh.entity';
-import { LogIn } from '../auth/entities/login.entity';
+import { LogIn } from '../auth/models/login.model';
 
 @Resolver(() => Refresh)
 export class RefreshResolver {

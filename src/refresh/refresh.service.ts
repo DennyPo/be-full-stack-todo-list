@@ -13,12 +13,13 @@ import { jwtConstants } from '../config/constants';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { AuthService } from '../auth/auth.service';
-import { LogIn } from '../auth/entities/login.entity';
+import { LogIn } from '../auth/models/login.model';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class RefreshService {
   constructor(
-    @Inject('REFRESH_REPOSITORY')
+    @InjectRepository(Refresh)
     private refreshRepository: Repository<Refresh>,
     private jwtService: JwtService,
     private userService: UserService,
