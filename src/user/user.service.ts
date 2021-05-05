@@ -29,7 +29,7 @@ export class UserService {
 
   async findAll(): Promise<User[]> {
     return await this.userRepository.find({
-      select: ['email', 'id'],
+      select: ['email', 'id', 'name'],
       order: {
         id: 'DESC',
       },
@@ -45,7 +45,7 @@ export class UserService {
   async findOneById(id: number): Promise<User> {
     return await this.userRepository.findOne({
       where: { id },
-      select: ['id', 'email'],
+      select: ['id', 'email', 'name'],
     });
   }
 }
