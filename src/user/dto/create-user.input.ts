@@ -7,6 +7,9 @@ export class CreateUserInput {
   @IsEmail()
   email: string;
 
+  @Field({ nullable: true })
+  name: string;
+
   @Field()
   @IsNotEmpty()
   password: string;

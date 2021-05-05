@@ -9,6 +9,7 @@ input CreateTodoInput {
 
 input CreateUserInput {
   email: String!
+  name: String
   password: String!
 }
 
@@ -53,5 +54,6 @@ input UpdateTodoInput {
 type User {
   email: String!
   id: Int!
+  name: String!
   password: String!
 }

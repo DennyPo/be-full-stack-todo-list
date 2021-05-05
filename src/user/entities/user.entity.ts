@@ -13,6 +13,10 @@ export class User {
   email: string;
 
   @Field()
+  @Column({ length: 100, nullable: true, default: '' })
+  name: string;
+
+  @Field()
   @Column()
   password?: string;
 }
