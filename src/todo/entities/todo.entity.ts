@@ -20,3 +20,12 @@ export class Todo {
   @Column({ length: 500 })
   description: string;
 }
+
+@ObjectType()
+export class PaginatedTodos {
+  @Field(() => [Todo])
+  list: Todo[];
+
+  @Field(() => Int)
+  count: number;
+}

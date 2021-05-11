@@ -29,10 +29,20 @@ type Mutation {
   updateTodo(updateTodoInput: UpdateTodoInput!): Todo!
 }
 
+type PaginatedTodos {
+  count: Int!
+  list: [Todo!]!
+}
+
+input Pagination {
+  page: Int
+  take: Int
+}
+
 type Query {
   currentUser: User!
-  findAllCurrentUserTodos: [Todo!]!
-  findAllTodosByUserId(userId: Float!): [Todo!]!
+  findAllCurrentUserTodos(pagination: Pagination = {page: 1, take: 10}): PaginatedTodos!
+  findAllTodosByUserId(pagination: Pagination = {page: 1, take: 10}, userId: Float!): PaginatedTodos!
   login(loginUserInput: CreateUserInput!): LogIn!
   refreshToken(refreshToken: String!): LogIn!
   users: [User!]!

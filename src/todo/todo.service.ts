@@ -2,9 +2,9 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateTodoInput } from './dto/create-todo.input';
 import { UpdateTodoInput } from './dto/update-todo.input';
 import { Repository } from 'typeorm';
-import { Todo } from './entities/todo.entity';
+import { PaginatedTodos, Todo } from './entities/todo.entity';
 import { User } from '../user/entities/user.entity';
-import { Message } from '../common/types/entities';
+import { Message, Pagination } from '../common/types/entities';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
@@ -20,13 +20,23 @@ export class TodoService {
     return await this.todoRepository.save(newTodo);
   }
 
-  async findAllByUserId(userId: number): Promise<Todo[]> {
-    return await this.todoRepository.find({
+  async findAllByUserId(
+    userId: number,
+    pagination: Pagination,
+  ): Promise<PaginatedTodos> {
+    const take = pagination.take || 10;
+    const skip = pagination.page ? (pagination.page - 1) * take : 0;
+
+    const [list, count] = await this.todoRepository.findAndCount({
       where: { userId },
       order: {
         id: 'DESC',
       },
+      take,
+      skip,
     });
+
+    return { list, count };
   }
 
   async updateTodo(
