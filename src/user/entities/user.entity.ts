@@ -20,3 +20,12 @@ export class User {
   @Column()
   password?: string;
 }
+
+@ObjectType()
+export class PaginatedUsers {
+  @Field(() => [User])
+  list: User[];
+
+  @Field(() => Int)
+  count: number;
+}

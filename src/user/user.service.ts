@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
 import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
+import { PaginatedUsers, User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
 // Utils
 
 import { hash } from '../utils';
+import { Pagination } from '../common/types/entities';
 
 @Injectable()
 export class UserService {
@@ -27,13 +28,20 @@ export class UserService {
     return result;
   }
 
-  async findAll(): Promise<User[]> {
-    return await this.userRepository.find({
+  async findAll(pagination: Pagination): Promise<PaginatedUsers> {
+    const take = pagination.take || 10;
+    const skip = pagination.page ? (pagination.page - 1) * take : 0;
+
+    const [list, count] = await this.userRepository.findAndCount({
       select: ['email', 'id', 'name'],
       order: {
         id: 'DESC',
       },
+      take,
+      skip,
     });
+
+    return { list, count };
   }
 
   async findOneByEmail(email: string): Promise<User> {
