@@ -3,16 +3,20 @@ import { TodoService } from './todo.service';
 import { PaginatedTodos, Todo } from './entities/todo.entity';
 import { CreateTodoInput } from './dto/create-todo.input';
 import { UpdateTodoInput } from './dto/update-todo.input';
-import { UseGuards } from '@nestjs/common';
+import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../common/decorators/currentUser.decorator';
 import { User } from '../user/entities/user.entity';
 import { Message, Pagination } from '../common/types/entities';
+import { UserService } from '../user/user.service';
 
 @Resolver(() => Todo)
 @UseGuards(GqlAuthGuard)
 export class TodoResolver {
-  constructor(private readonly todoService: TodoService) {}
+  constructor(
+    private readonly todoService: TodoService,
+    private readonly userService: UserService,
+  ) {}
 
   @Mutation(() => Todo)
   async createTodo(
@@ -37,6 +41,12 @@ export class TodoResolver {
     @Args('pagination', { nullable: true, defaultValue: { page: 1, take: 10 } })
     pagination: Pagination,
   ): Promise<PaginatedTodos> {
+    const user = await this.userService.findOneById(userId);
+
+    if (!user) {
+      throw new HttpException('User doesn`t exist', HttpStatus.NOT_FOUND);
+    }
+
     return await this.todoService.findAllByUserId(userId, pagination);
   }
 
