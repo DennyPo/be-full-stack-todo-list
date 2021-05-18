@@ -1,12 +1,12 @@
-export const SALT_ROUNDS = 10;
+export const SALT_ROUNDS = process.env.SALT_ROUNDS;
 
 export const jwtConstants = {
   accessToken: {
-    secret: 'accessSecretKey',
+    secret: process.env.ACCESS_TOKEN_SECRET_KEY,
     expiresIn: '24h',
   },
   refreshToken: {
-    secret: 'refreshSecretKey',
+    secret: process.env.REFRESH_TOKEN_SECRET_KEY,
     expiresIn: '30 days',
   },
 };

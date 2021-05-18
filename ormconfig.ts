@@ -1,10 +1,10 @@
 module.exports = {
   type: 'postgres',
-  host: 'db',
+  host: process.env.DB_HOST,
   port: 5432,
-  username: 'admin',
-  password: '111',
-  database: 'mydb',
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   synchronize: true,
   migrations: ['src/migration/*{.ts,.js}'],
   cli: {
