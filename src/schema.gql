@@ -25,6 +25,7 @@ type Message {
 type Mutation {
   createTodo(createTodoInput: CreateTodoInput!): Todo!
   deleteTodo(id: Float!): Message!
+  logout(refreshToken: String!): Message!
   signUp(signUpUserInput: CreateUserInput!): User!
   updateTodo(updateTodoInput: UpdateTodoInput!): Todo!
 }

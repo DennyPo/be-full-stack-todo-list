@@ -15,6 +15,7 @@ import { UserService } from '../user/user.service';
 import { AuthService } from '../auth/auth.service';
 import { LogIn } from '../auth/models/login.model';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Message } from '../common/types/entities';
 
 @Injectable()
 export class RefreshService {
@@ -43,6 +44,19 @@ export class RefreshService {
     return await this.refreshRepository.update({ token }, { token: newToken });
   }
 
+  async delete(token: string, userId: number): Promise<Message> {
+    const { affected } = await this.refreshRepository.delete({ token, userId });
+
+    if (!affected) {
+      throw new HttpException(
+        'Can not find refresh token',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return { message: 'Successfully deleted' };
+  }
+
   generateRefreshToken(user: User): string {
     return this.jwtService.sign(
       { email: user.email, sub: user.id },
@@ -51,7 +65,6 @@ export class RefreshService {
   }
 
   async createNewAccessToken(refreshToken: string): Promise<LogIn> {
-    // try {
     const decodedToken = this.jwtService.verify(
       refreshToken,
       jwtConstants.refreshToken,
@@ -64,18 +77,8 @@ export class RefreshService {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
 
-    // const newToken = this.generateRefreshToken(user);
-
-    // await this.update(refreshToken, newToken);
-
     return {
       accessToken: this.authService.generateAccessToken(user),
-      // refreshToken: newToken
     };
-
-    // } catch (error) {
-
-    //   throw new HttpException(error, HttpStatus.UNAUTHORIZED);
-    // }
   }
 }

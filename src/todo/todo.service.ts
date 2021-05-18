@@ -58,9 +58,9 @@ export class TodoService {
   }
 
   async deleteTodo(id: number, userId: number): Promise<Message> {
-    const result = await this.todoRepository.delete({ id, userId });
+    const { affected } = await this.todoRepository.delete({ id, userId });
 
-    if (!result.affected) {
+    if (!affected) {
       throw new HttpException('Can not find todo item', HttpStatus.NOT_FOUND);
     }
 
