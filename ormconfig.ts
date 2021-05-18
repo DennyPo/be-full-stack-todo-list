@@ -1,9 +1,9 @@
 module.exports = {
   type: 'postgres',
-  host: 'localhost',
+  host: 'db',
   port: 5432,
   username: 'admin',
-  password: '1111',
+  password: '111',
   database: 'mydb',
   synchronize: true,
   migrations: ['src/migration/*{.ts,.js}'],
